@@ -1,6 +1,6 @@
 # kafka-streams-101
 
-To compile a standalone jar with all the depependencies included : ``mvn clean install assembly:single`` 
+To compile a standalone jar with all the dependencies included : ``mvn clean install assembly:single`` 
 
 ### AppSimpleDateFormat
 This is an example of Kafka Streams use of Processor API.<br>
