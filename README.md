@@ -1,5 +1,7 @@
 # kafka-streams-101
 
+To compile a standalone jar with all the depependencies included : ``mvn clean install assembly:single`` 
+
 ### AppSimpleDateFormat
 This is an example of Kafka Streams use of Processor API.<br>
 The message in Kafka is supossed to have a timestamp in seconds form 1970 and is converted in the call to the processor to yyyy-mm-dd hh24:mi:ss format
