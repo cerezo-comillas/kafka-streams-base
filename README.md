@@ -1,1 +1,1 @@
-# kafka-streams-base
+# kafka-streams-101
