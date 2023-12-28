@@ -26,20 +26,18 @@ public class ProcessorSimpleDateFormat implements Processor<String, String, Stri
     public void process(final Record<String, String> record) {
     	
     	System.out.println("INPUT: key[" + record.key() + "] - data["  + record.value() + "]") ;
-//    	System.out.println( "THREAD: " + Thread.currentThread().getName() ) ;
-    	
-        final String[] aux = record.value().toLowerCase(Locale.getDefault()).split(";");
-        
-        if ( aux.length >= 2 ) {
-        	String ts = aux[1] ;
-        	
-        	String dateStr = sdf.format(new Date(Long.parseLong(ts)*1000)) ;
-//        	System.out.println (ts) ;
-//        	System.out.println ("OUTPUT: " + record.value() + " " + dateStr) ;
 
-        	Record<String, String> recordOut = new Record<String, String>(null, dateStr , System.currentTimeMillis()) ;
-			_context.forward(recordOut);     	
-        }
+        final String content = record.value();
+        String dateStr = "" ;
+    	try {
+	        	dateStr = "INPUT: key[" + record.key() + "] - data["  + record.value() + "]," 
+    	+ " OUPUT[" + sdf.format(new Date(Long.parseLong(content)*1000)) + "]" ;
+    	} catch (Exception ex) {
+    		dateStr = "Content not a date in seconds from 1970 [" + content + "]" ;
+    	}
+    	
+    	Record<String, String> recordOut = new Record<String, String>(record.key() , dateStr , System.currentTimeMillis()) ;
+		_context.forward(recordOut);     	
 
     }
 

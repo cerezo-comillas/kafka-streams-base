@@ -20,11 +20,11 @@ public class StaticArgs {
 		Options options = new Options();
 		
 		options.addOption(new Option("h", "help", false, "Print this help"));
-		options.addOption(new Option("a", "appid", true, "Application ID"));
-		options.addOption(new Option("s", "boot-servers", true, "boot server to connect"));
-		options.addOption(new Option("i", "topic-in", true, "input topic"));
-		options.addOption(new Option("o", "topic-out", true, "output topic"));
-		options.addOption(new Option("t", "num-threads", true, "Number of threads in client"));
+		options.addOption(new Option("a", "appid", true, "Application ID [default generic]"));
+		options.addOption(new Option("s", "boot-servers", true, "boot server to connect [default localhost:9092]"));
+		options.addOption(new Option("i", "topic-in", true, "input topic [default topic_in]"));
+		options.addOption(new Option("o", "topic-out", true, "output topic [default topic_out]"));
+		options.addOption(new Option("t", "num-threads", true, "Number of threads in client [default 1]"));
 		
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = null ;
