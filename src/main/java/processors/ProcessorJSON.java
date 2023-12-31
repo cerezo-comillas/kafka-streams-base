@@ -1,14 +1,13 @@
 package processors;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.Record;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 
-public class ProcessorSimpleDateFormat implements Processor<String, String, String, String> {
+public class ProcessorJSON implements Processor<String, String, String, String> {
 
     ProcessorContext<String, String> _context ;
     
@@ -19,7 +18,8 @@ public class ProcessorSimpleDateFormat implements Processor<String, String, Stri
     	
     }
 
-    SimpleDateFormat sdf = new SimpleDateFormat("YYY-MM-dd HH:mm:ss") ;
+    
+    JSONParser parser = new JSONParser();
     
     @Override
     public void process(final Record<String, String> record) {
@@ -27,15 +27,21 @@ public class ProcessorSimpleDateFormat implements Processor<String, String, Stri
     	System.out.println("INPUT: key[" + record.key() + "] - data["  + record.value() + "]") ;
 
         final String content = record.value();
-        String dateStr = "" ;
+        String outText = "" ;
     	try {
-	        	dateStr = "INPUT: key[" + record.key() + "] - data["  + record.value() + "]," 
-    	+ " OUPUT[" + sdf.format(new Date(Long.parseLong(content)*1000)) + "]" ;
+    		JSONObject jsonObject = (JSONObject) parser.parse(content) ;
+    		
+    		for ( Object key : jsonObject.keySet() ) {
+    			if (outText.length() > 0 ) outText+= "\n" ;
+    			outText += key.toString() + ":" + jsonObject.get(key) ;
+    		}
+    		
+    		
     	} catch (Exception ex) {
-    		dateStr = "Content not a date in seconds from 1970 [" + content + "]" ;
+    		outText = "Content is not valid JSON [" + content + "] " + ex.toString() ;
     	}
     	
-    	Record<String, String> recordOut = new Record<String, String>(record.key() , dateStr , System.currentTimeMillis()) ;
+    	Record<String, String> recordOut = new Record<String, String>(record.key() , outText , System.currentTimeMillis()) ;
 		_context.forward(recordOut);     	
 
     }
